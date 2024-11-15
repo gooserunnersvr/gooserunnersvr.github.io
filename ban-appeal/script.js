@@ -86,10 +86,16 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => {
             console.log('Response Status:', response.status);  // Log the HTTP status code
-            return response.json();  // Only parse JSON if status is okay
+           if(response.status !== 204) return response.json();
+            return null;// Only parse JSON if status is okay
         })
         .then(data => {
+            if (data) {
             console.log('Success:', data);
+            } else {
+            console.log('No content returned from the webhook (204)');
+            }
+    
             alert('Your appeal has been submitted successfully!');
             banAppealForm.reset();  // Reset the form after successful submission
         })
