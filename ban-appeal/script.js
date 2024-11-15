@@ -36,19 +36,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     helpButton.addEventListener('click', () => {
-        helpBox.classList.toggle('helpBox-invis');
-        helpBox.classList.toggle('helpBox-invis.visible');
+        helpBox.classList.toggle('helpBox-invis');  // Toggle visibility class
+        helpBox.classList.toggle('visible');  // Add/remove 'visible' to show/hide
     });
 
     closeHelpBoxButton.addEventListener('click', () => {
-        helpBox.classList.remove('helpBox-invis.visible');
+        helpBox.classList.remove('visible');
         helpBox.classList.add('helpBox-invis');
     });
 
     const webhookUrl = 'https://discord.com/api/webhooks/1268725813201735733/yavV7kQr4FC-PzzXhRnCG6PT2-TsR2vY6CL38SPBEF9W3Pgv44bQftnPGCXW3XicHcm2';
 
+    // Ban appeal form submission
     banAppealForm.addEventListener('submit', (event) => {
         event.preventDefault(); // Prevent the default form submission behavior
+        console.log("Ban Appeal Form Submitted");
 
         if (!banAppealForm.checkValidity()) {
             alert('Please fill out all required fields.');
@@ -73,6 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ]
         };
 
+        console.log('Payload being sent to webhook:', JSON.stringify(embed, null, 2));  // Log payload for debugging
+
         fetch(webhookUrl, {
             method: 'POST',
             headers: {
@@ -81,15 +85,13 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify(embed)
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
+            console.log('Response Status:', response.status);  // Log the HTTP status code
+            return response.json();  // Only parse JSON if status is okay
         })
         .then(data => {
             console.log('Success:', data);
             alert('Your appeal has been submitted successfully!');
-            banAppealForm.reset();
+            banAppealForm.reset();  // Reset the form after successful submission
         })
         .catch(error => {
             console.error('Error submitting ban appeal:', error);
@@ -97,8 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Discord form submission
     discordForm.addEventListener('submit', (event) => {
         event.preventDefault(); // Prevent the default form submission behavior
+        console.log("Discord Appeal Form Submitted");
 
         if (!discordForm.checkValidity()) {
             alert('Please fill out all required fields.');
@@ -121,6 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ]
         };
 
+        console.log('Payload being sent to webhook:', JSON.stringify(embed, null, 2));  // Log payload for debugging
+
         fetch(webhookUrl, {
             method: 'POST',
             headers: {
@@ -129,9 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify(embed)
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+            console.log('Response Status:', response.status);
             return response.json();
         })
         .then(data => {
